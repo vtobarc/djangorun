@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Servicios Ofrecidos{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-12 mb-3">
+            <img src="{% static 'img/image1.png' %}" alt="Servicio 1" class="img-fluid">
+        </div>
+        <div class="col-12 mb-3">
+            <img src="{% static 'img/image2.png' %}" alt="Servicio 2" class="img-fluid">
+        </div>
+        <div class="col-12 mb-3">
+            <img src="{% static 'img/image3.png' %}" alt="Servicio 3" class="img-fluid">
+        </div>
+        <div class="col-12 mb-3">
+            <img src="{% static 'img/image4.png' %}" alt="Servicio 4" class="img-fluid">
+        </div>
+        <div class="col-12 mb-3">
+            <img src="{% static 'img/image5.png' %}" alt="Servicio 5" class="img-fluid">
+        </div>
+        <div class="col-12 mb-3">
+            <img src="{% static 'img/image6.png' %}" alt="Servicio 6" class="img-fluid">
+        </div>
+    </div>
+</div>
+{% endblock %}

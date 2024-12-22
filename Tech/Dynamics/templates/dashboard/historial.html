@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="main">
+  <div id="notification" class="notification" style="display: none;">Actividad reportada exitosamente.</div>
+
+  <div class="container mt-4">
+    <h2>Mi Historial de Actividades</h2>
+    <div class="sort-controls">
+      <div class="date-controls">
+        <div>
+          <span class="date-label">Desde:</span>
+          <input type="date" class="date-filter" id="startDate" onchange="filterByDateRange()">
+        </div>
+        <div>
+          <span class="date-label">Hasta:</span>
+          <input type="date" class="date-filter" id="endDate" onchange="filterByDateRange()">
+        </div>
+      </div>
+     
+      <input type="text" class="search-bar" id="searchInput" placeholder="Buscar actividades..." oninput="searchActivities()">
+    </div>
+        
+    <div class="user-info">
+      <div class="user-info-grid">
+        <div class="user-info-item">
+          <span class="user-info-label">Usuario</span>
+          <div class="user-info-value">{{ user.get_full_name }}</div>
+        </div>
+        <div class="user-info-item">
+          <span class="user-info-label">Email</span>
+          <div class="user-info-value">{{ user.email }}</div>
+        </div>
+        <div class="user-info-item">
+          <span class="user-info-label">Teléfono</span>
+          <div class="user-info-value">{{ user.telefono }}</div>
+        </div>
+        <div class="user-info-item">
+          <span class="user-info-label">Rol</span>
+          <div class="user-info-value">{{ user.get_rol_display }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-group" id="activitiesList">
+      {% for activity in activities %}
+        <div class="list-group-item">
+          {% if activity.type == 'Solicitud' %}
+            <h5 class="mb-1">Solicitud: {{ activity.titulo }}</h5>
+            <p class="mb-1">{{ activity.descripcion|truncatewords:20 }}</p>
+            <div class="status-badge status-progress">
+              <p>Estado: <span class="estado-valor">{{ activity.estado }}</span></p>
+            </div>
+    
+            <!-- Barra de progreso -->
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: {{ activity.progreso }}%;"></div>
+          </div>
+          <p><strong>Progreso: {{ activity.progreso }}%</strong></p>
+            {% if activity.precio %}
+              <p><strong>Precio acordado: ${{ activity.precio }}</strong></p>
+            {% endif %}
+    
+            <small class="text-muted">📅 {{ activity.fecha }}</small>
+            <p><strong>Servidor Asignado:</strong> 
+              {% if activity.aceptado_por %}
+                  {{ activity.aceptado_por }}
+              {% else %}
+                  Nadie
+              {% endif %}
+            </p>
+
+              
+            <button class="action-button chat-button" onclick="uniqueToggleNotifications()">
+              💬 Chat con Servidor
+            </button>
+    
+            <button class="action-button report-button" onclick="reportServer('{{ activity.servidor }}')">
+              ⚠️ Reportar Problema
+            </button>
+          {% elif activity.type == 'Message' %}
+            <!-- Manejo para otros tipos de actividad -->
+          {% endif %}
+        </div>
+      {% empty %}
+        <p>No hay actividades registradas.</p>
+      {% endfor %}
+    </div>
+    
+    {% if activities.has_next %}
+      <a href="?page={{ activities.next_page_number }}">Ver más</a>
+    {% endif %}
+  </div>
+
+  <!-- Report Modal -->
+  <div id="reportModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Reportar Problema</h2>
+        <button class="close-modal" onclick="closeReportModal()">×</button>
+      </div>
+      <form id="reportForm" onsubmit="submitReport(event)">
+        <div style="margin-bottom: 15px;">
+          <label for="reportDescription">Descripción del problema:</label>
+          <textarea id="reportDescription" rows="4" style="width: 100%; margin-top: 5px; padding: 8px;" required></textarea>
+        </div>
+        
+        <div class="file-upload" onclick="document.getElementById('reportFiles').click()">
+          <p>📎 Haz clic para subir evidencias (fotos, documentos)</p>
+          <input type="file" id="reportFiles" multiple style="display: none" onchange="handleFiles(this.files)">
+        </div>
+        
+        <div id="fileList" style="margin: 10px 0;"></div>
+        
+        <button type="submit" style="background: var(--primary); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%;">
+          Enviar Reporte
+        </button>
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}
+

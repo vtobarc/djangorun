@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="mai">
+        <section id="solicitudes-pendientes">
+            <h2>Solicitudes Pendientes</h2>
+            <div id="lista-solicitudes-pendientes"></div>
+        </section>
+        <section id="solicitudes-en-proceso">
+            <h2>Solicitudes en Proceso</h2>
+            <div id="lista-solicitudes-en-proceso"></div>
+        </section>
+        <section id="solicitudes-completadas">
+            <h2>Solicitudes Completadas</h2>
+            <div id="lista-solicitudes-completadas"></div>
+        </section>
+    </main>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Marcar Trabajo como Terminado</h2>
+            <form id="formulario-completar">
+                <input type="hidden" id="completar-id">
+                <div class="form-group">
+                    <label for="comentarios">Comentarios:</label>
+                    <textarea id="comentarios" name="comentarios" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="archivos_adjuntos">Archivos Adjuntos:</label>
+                    <input type="file" id="archivos_adjuntos" name="archivos_adjuntos" multiple>
+                </div>
+                <button type="submit">Marcar como Terminado</button>
+            </form>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/solicitudes.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+

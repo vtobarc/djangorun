@@ -1,0 +1,915 @@
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+    :root {
+        --primary: #2196f3;
+        --light: #f5f5f5;
+        --gray: #757575;
+      }
+      
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: #fafafa;
+      }
+      
+      .unique-chat-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 990;
+      }
+      
+      .unique-chat-container {
+        position: relative;
+        max-width: 1000px;
+        width:600px ;
+        margin: 0;
+        background: white;
+        z-index: 991;
+      }
+      
+      .unique-chat-list {
+        border-right: 1px solid #eee;
+        overflow-y: auto;
+      }
+      
+      .unique-chat-preview {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      
+      .unique-chat-preview:hover {
+        background: var(--light);
+      }
+      
+      .unique-chat-preview.active {
+        background: #e3f2fd;
+      }
+      
+      .unique-chat-preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      
+      .unique-chat-preview-name {
+        font-weight: 600;
+      }
+      
+      .unique-chat-preview-time {
+        font-size: 0.8rem;
+        color: var(--gray);
+      }
+      
+      .unique-chat-preview-last {
+        color: var(--gray);
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .unique-chat-main {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .unique-chat-header {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .unique-chat-header-info h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.2rem;
+      }
+      
+      .unique-chat-header-info .unique-status {
+        font-size: 0.9rem;
+        color: var(--gray);
+      }
+      
+      .unique-chat-header-actions {
+        display: flex;
+        align-items: center;
+      }
+      
+      .unique-chat-header-actions button {
+        padding: 0.5rem;
+        margin-left: 0.5rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: var(--gray);
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        transition: background 0.2s;
+      }
+      
+      .unique-chat-header-actions button:hover {
+        background: var(--light);
+      }
+      
+      .unique-chat-header-actions button:last-child {
+        margin-left: 0.5rem;
+      }
+      
+      .unique-chat-messages {
+        padding: 1rem;
+        overflow-y: auto;
+        max-height: calc(80vh - 140px);
+      }
+      
+      .unique-message {
+        margin-bottom: 1rem;
+        max-width: 70%;
+      }
+      
+      .unique-message.sent {
+        margin-left: auto;
+      }
+      
+      .unique-message-bubble {
+        padding: 0.8rem;
+        border-radius: 12px;
+        background: var(--light);
+      }
+      
+      .unique-message.sent .unique-message-bubble {
+        background: var(--primary);
+        color: white;
+      }
+      
+      .unique-message-time {
+        font-size: 0.8rem;
+        color: var(--gray);
+        margin-top: 0.3rem;
+      }
+      
+      .unique-rating {
+        display: inline-flex;
+        margin-top: 0.5rem;
+      }
+      
+      .unique-star {
+        color: #ffd700;
+        cursor: pointer;
+      }
+      
+      .unique-chat-input {
+        padding: 1rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        align-items: center;
+      }
+      
+      .unique-chat-input input {
+        flex: 1;
+        padding: 0.8rem;
+        border: 1px solid #eee;
+        border-radius: 24px;
+        margin-right: 1rem;
+      }
+      
+      .unique-chat-input button {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        background: var(--primary);
+        color: white;
+        border-radius: 24px;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      
+      .unique-chat-input button:hover {
+        opacity: 0.9;
+      }
+      
+      .unique-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      
+      .unique-notification.animated {
+        animation: unique-slideIn 0.5s forwards, unique-slideOut 0.5s forwards 3s;
+      }
+      
+      @keyframes unique-slideIn {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      
+      @keyframes unique-slideOut {
+        to {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+      }
+      
+      .unique-blocked-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255,255,255,0.9);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: var(--gray);
+        flex-direction: column;
+        gap: 1rem;
+        z-index: 100;
+      }
+      
+      .unique-notification-settings {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        display: none;
+      }
+      
+      .unique-notification-settings.visible {
+        display: block;
+      }
+      
+      .unique-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      
+      .unique-modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+      }
+      
+      .unique-modal-buttons {
+        margin-top: 1rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+      
+      .unique-modal-button {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      .unique-confirm-button {
+        background: var(--primary);
+        color: white;
+      }
+      
+      .unique-cancel-button {
+        background: var(--gray);
+        color: white;
+      }
+      
+      .unique-message-status {
+        display: flex;
+        gap: 2px;
+        margin-top: 4px;
+        font-size: 0.8rem;
+      }
+      
+      .unique-check {
+        color: #757575;
+      }
+      
+      .unique-delivered .unique-check {
+        color: #757575;
+      }
+      
+      .unique-read .unique-check {
+        color: #2196f3;
+      }
+      
+      .unique-user-rating {
+        display: none;
+        margin-left: 10px;
+        font-size: 0.9rem;
+      }
+      
+      .unique-unblock-button {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 24px;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+      
+      .unique-notifications-icon {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1010;
+      }
+      
+      .unique-notifications-icon button {
+        background: white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: relative;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .unique-notifications-icon i {
+        font-size: 1.2rem;
+        color: #666;
+      }
+      
+      .unique-notifications-dropdown {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        width: 300px;
+        max-height: 400px;
+        overflow-y: auto;
+        display: none;
+        z-index: 1010;
+      }
+      
+      .unique-notifications-dropdown.show {
+        display: block;
+      }
+      
+      .unique-notification-item {
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border-left: 4px solid transparent;
+      }
+      
+      .unique-notification-item[style*="f8d7da"] {
+        border-left-color: #dc3545;
+      }
+      
+      .unique-notification-item[style*="d4edda"] {
+        border-left-color: #28a745;
+      }
+      
+      .unique-notification-item[style*="fff3cd"] {
+        border-left-color: #ffc107;
+      }
+      
+      .unique-notification-item:hover {
+        filter: brightness(0.95);
+      }
+      
+      .unique-notification-badge {
+        background: red;
+        color: white;
+        border-radius: 50%;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.8rem;
+        position: absolute;
+        top: -5px;
+        right: -5px;
+      }
+      
+      .unique-settings-rating {
+        display: inline-flex !important;
+        margin: 0.5rem 0;
+      }
+      
+      .unique-settings-rating .unique-star {
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      
+      .unique-settings-rating .unique-star:hover {
+        transform: scale(1.2);
+      }
+</style>
+
+<main class="unique-main">
+    <div class="unique-notifications-icon">
+        <button onclick="uniqueToggleNotifications()" title="Notificaciones">
+          <i class="fas fa-envelope"></i>
+          <span class="unique-notification-badge" id="uniqueNotificationBadge" style="display: none;">0</span>
+        </button>
+      </div>
+      <div class="unique-notifications-dropdown" id="uniqueNotificationsDropdown"></div>
+      <div class="unique-chat-modal" id="uniqueChatModal">
+        <div class="unique-chat-container" style="display: flex;">
+          <div class="unique-chat-list">
+            <div class="unique-chat-preview active">
+              <div class="unique-chat-preview-header">
+                <span class="unique-chat-preview-name">Ana Garc&#xed;a</span>
+                <span class="unique-chat-preview-time">10:30</span>
+              </div>
+              <div class="unique-chat-preview-last">&#xa1;Hola! &#xbf;C&#xf3;mo est&#xe1;s?</div>
+            </div>
+            
+            <div class="unique-chat-preview">
+              <div class="unique-chat-preview-header">
+                <span class="unique-chat-preview-name">Carlos L&#xf3;pez</span>
+                <span class="unique-chat-preview-time">09:15</span>
+              </div>
+              <div class="unique-chat-preview-last">Gracias por la informaci&#xf3;n</div>
+            </div>
+            
+            <div class="unique-chat-preview">
+              <div class="unique-chat-preview-header">
+                <span class="unique-chat-preview-name">Mar&#xed;a Rodr&#xed;guez</span>
+                <span class="unique-chat-preview-time">11:45</span>
+              </div>
+              <div class="unique-chat-preview-last">&#xbf;Quedamos para el caf&#xe9; ma&#xf1;ana?</div>
+            </div>
+            
+            <div class="unique-chat-preview">
+              <div class="unique-chat-preview-header">
+                <span class="unique-chat-preview-name">Juan P&#xe9;rez</span>
+                <span class="unique-chat-preview-time">11:20</span>
+              </div>
+              <div class="unique-chat-preview-last">Te envi&#xe9; los documentos por email</div>
+            </div>
+            
+            <div class="unique-chat-preview">
+              <div class="unique-chat-preview-header">
+                <span class="unique-chat-preview-name">Laura S&#xe1;nchez</span>
+                <span class="unique-chat-preview-time">10:55</span>
+              </div>
+              <div class="unique-chat-preview-last">&#xbf;Revisaste el proyecto?</div>
+            </div>
+          </div>
+          
+          <div class="unique-chat-main">
+            <div class="unique-chat-header">
+              <button onclick="uniqueCloseChat()" title="Cerrar chat">&#x2716;&#xfe0f;</button>
+              <div class="unique-chat-header-info">
+                <h2>Ana Garc&#xed;a</h2>
+                <div style="display: flex; align-items: center;">
+                  <span class="unique-status">En l&#xed;nea</span>
+                  <span class="unique-user-rating"></span>
+                </div>
+              </div>
+              <div class="unique-chat-header-actions">
+                <button onclick="uniqueBlockUser()" title="Bloquear">&#x1f6ab;</button>
+                <button onclick="uniqueReportUser()" title="Reportar">&#x26a0;&#xfe0f;</button>
+                <button onclick="uniqueToggleNotificationSettings()" title="Configuraci&#xf3;n de notificaciones">&#x2699;&#xfe0f;</button>
+              </div>
+            </div>
+            
+            <div class="unique-chat-messages">
+              <div class="unique-message">
+                <div class="unique-message-bubble">&#xa1;Hola! &#xbf;C&#xf3;mo est&#xe1;s?</div>
+                <div class="unique-message-time">10:30</div>
+              </div>
+              
+              <div class="unique-message sent">
+                <div class="unique-message-bubble">&#xa1;Hola Ana! Todo bien, &#xbf;y t&#xfa;?</div>
+                <div class="unique-message-time">10:31</div>
+                <div class="unique-message-status">
+                  <span class="unique-check">&#x2713;</span>
+                  <span class="unique-check">&#x2713;</span>
+                </div>
+              </div>
+              
+              <div class="unique-message">
+                <div class="unique-message-bubble">Muy bien, gracias &#x1f60a;</div>
+                <div class="unique-message-time">10:32</div>
+              </div>
+            </div>
+            
+            <div class="unique-chat-input">
+              <input type="text" placeholder="Escribe un mensaje...">
+              <button>Enviar</button>
+            </div>
+          </div>
+          
+          <div class="unique-notification-settings" id="uniqueNotificationSettings">
+            <h3>Configuraci&#xf3;n</h3>
+            <div style="margin: 1rem 0;">
+              <label>
+                <input type="checkbox" id="uniqueEnableNotifications" checked>
+                Activar notificaciones
+              </label>
+            </div>
+            <div style="margin: 1rem 0;">
+              <label>
+                <input type="checkbox" id="uniqueAnimatedNotifications" checked>
+                Animaciones en notificaciones
+              </label>
+            </div>
+            <div style="margin: 1rem 0;">
+              <h4>Calificar Usuario</h4>
+              <div class="unique-rating unique-settings-rating">
+                <span class="unique-star" onclick="uniqueRateFromSettings(1)">&#x2b50;</span>
+                <span class="unique-star" onclick="uniqueRateFromSettings(2)">&#x2b50;</span>
+                <span class="unique-star" onclick="uniqueRateFromSettings(3)">&#x2b50;</span>
+                <span class="unique-star" onclick="uniqueRateFromSettings(4)">&#x2b50;</span>
+                <span class="unique-star" onclick="uniqueRateFromSettings(5)">&#x2b50;</span>
+              </div>
+            </div>
+            <button onclick="uniqueSaveNotificationSettings()" style="background: var(--primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+              Guardar
+            </button>
+          </div>
+          
+          <div class="unique-blocked-overlay" id="uniqueBlockedOverlay">
+            <div>Usuario bloqueado o reportado. No es posible enviar mensajes.</div>
+            <button class="unique-unblock-button" onclick="uniqueUnblockUser()">Desbloquear Usuario</button>
+          </div>
+          
+          <div class="unique-modal" id="uniqueBlockModal">
+            <div class="unique-modal-content">
+              <h3>&#xbf;Est&#xe1;s seguro de que deseas bloquear a este usuario?</h3>
+              <div class="unique-modal-buttons">
+                <button class="unique-modal-button unique-confirm-button" onclick="uniqueConfirmBlock()">S&#xed;</button>
+                <button class="unique-modal-button unique-cancel-button" onclick="uniqueCloseBlockModal()">No</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="unique-modal" id="uniqueReportModal">
+            <div class="unique-modal-content">
+              <h3>Reportar Usuario</h3>
+              <p>&#xbf;Est&#xe1;s seguro de que deseas reportar a este usuario?</p>
+              <textarea id="uniqueReportReason" placeholder="Indica el motivo del reporte" style="width: 100%; margin: 1rem 0; padding: 0.5rem; border-radius: 4px; border: 1px solid #eee;"></textarea>
+              <div class="unique-modal-buttons">
+                <button class="unique-modal-button unique-confirm-button" onclick="uniqueConfirmReport()">Reportar</button>
+                <button class="unique-modal-button unique-cancel-button" onclick="uniqueCloseReportModal()">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Place the JavaScript code here
+// You may want to modify it to work with Django's CSRF protection and use Django's URL routing
+let uniqueUserRating = 0;
+let uniqueAutoReplyTimeout = null;
+function uniqueAutoReply(messageText) {
+  const autoResponses = ["¡Gracias por tu mensaje! Te responderé pronto.", "¡Hola! En este momento estoy ocupado(a), pero te contestaré lo antes posible.", "He recibido tu mensaje. Me pondré en contacto contigo pronto.", "¡Gracias por escribir! Te responderé en cuanto pueda."];
+  clearTimeout(uniqueAutoReplyTimeout);
+  uniqueAutoReplyTimeout = setTimeout(() => {
+    const response = autoResponses[Math.floor(Math.random() * autoResponses.length)];
+    const currentChatName = document.querySelector('.unique-chat-header-info h2').textContent;
+    const messagesContainer = document.querySelector('.unique-chat-messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'unique-message';
+    messageDiv.innerHTML = `
+      <div class="unique-message-bubble">${response}</div>
+      <div class="unique-message-time">${new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    })}</div>
+    `;
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    uniqueAddNotification(`Nuevo mensaje de ${currentChatName}`, 'chat' + Date.now());
+  }, 1000);
+}
+let uniqueIsUserBlocked = false;
+let uniqueNotificationSettings = {
+  enabled: true,
+  animated: true
+};
+function uniqueShowNotification(message) {
+  if (!uniqueNotificationSettings.enabled) return;
+  const notification = document.createElement('div');
+  notification.className = 'unique-notification';
+  if (uniqueNotificationSettings.animated) {
+    notification.classList.add('animated');
+  }
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  setTimeout(() => {
+    notification.remove();
+  }, 4000);
+}
+function uniqueRateFromSettings(stars) {
+  uniqueUserRating = stars;
+  uniqueUpdateUserRating();
+  uniqueAddNotification(`Has calificado al usuario con ${stars} estrellas`, null, 'rating');
+}
+function uniqueUpdateUserRating() {
+  const ratingDisplay = document.querySelector('.unique-user-rating');
+  if (uniqueUserRating > 0) {
+    ratingDisplay.innerHTML = '⭐'.repeat(uniqueUserRating);
+    ratingDisplay.style.display = 'block';
+  }
+}
+function uniqueBlockUser() {
+  document.getElementById('uniqueBlockModal').style.display = 'flex';
+}
+function uniqueCloseBlockModal() {
+  document.getElementById('uniqueBlockModal').style.display = 'none';
+}
+function uniqueConfirmBlock() {
+  uniqueIsUserBlocked = true;
+  document.getElementById('uniqueBlockedOverlay').style.display = 'flex';
+  uniqueAddNotification('Has bloqueado al usuario', null, 'block');
+  uniqueCloseBlockModal();
+  const unblockBtn = document.createElement('button');
+  unblockBtn.textContent = 'Desbloquear';
+  unblockBtn.onclick = uniqueUnblockUser;
+  unblockBtn.className = 'unique-modal-button unique-confirm-button';
+  document.getElementById('uniqueBlockedOverlay').appendChild(unblockBtn);
+}
+function uniqueUnblockUser() {
+  uniqueIsUserBlocked = false;
+  document.getElementById('uniqueBlockedOverlay').style.display = 'none';
+  uniqueAddNotification('Has desbloqueado al usuario', null, 'unblock');
+}
+let uniqueMessageStatuses = ['sent', 'delivered', 'read'];
+let uniqueCurrentStatusIndex = 0;
+function uniqueUpdateMessageStatus(messageElement) {
+  const statusDiv = messageElement.querySelector('.unique-message-status');
+  const status = uniqueMessageStatuses[uniqueCurrentStatusIndex];
+  statusDiv.innerHTML = '';
+  if (status === 'sent') {
+    statusDiv.innerHTML = '<span class="unique-check">✓</span>';
+  } else if (status === 'delivered') {
+    statusDiv.innerHTML = '<span class="unique-check">✓</span><span class="unique-check">✓</span>';
+  } else if (status === 'read') {
+    statusDiv.innerHTML = '<span class="unique-check">✓</span><span class="unique-check">✓</span>';
+    statusDiv.classList.add('unique-read');
+  }
+  uniqueCurrentStatusIndex = (uniqueCurrentStatusIndex + 1) % uniqueMessageStatuses.length;
+}
+function uniqueSendMessage() {
+  if (uniqueIsUserBlocked) {
+    uniqueShowNotification('No puedes enviar mensajes a este usuario');
+    return;
+  }
+  const text = uniqueInput.value.trim();
+  if (text) {
+    const messagesContainer = document.querySelector('.unique-chat-messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'unique-message sent';
+    messageDiv.innerHTML = `
+      <div class="unique-message-bubble">${text}</div>
+      <div class="unique-message-time">${new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    })}</div>
+      <div class="unique-message-status">
+        <span class="unique-check">✓</span>
+      </div>
+    `;
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    uniqueInput.value = '';
+    setTimeout(() => uniqueUpdateMessageStatus(messageDiv), 1000);
+    setTimeout(() => uniqueUpdateMessageStatus(messageDiv), 2000);
+    uniqueShowNotification('Mensaje enviado');
+    uniqueAutoReply(text);
+  }
+}
+function uniqueReportUser() {
+  document.getElementById('uniqueReportModal').style.display = 'flex';
+}
+function uniqueCloseReportModal() {
+  document.getElementById('uniqueReportModal').style.display = 'none';
+}
+function uniqueConfirmReport() {
+  const reason = document.getElementById('uniqueReportReason').value.trim();
+  if (reason) {
+    uniqueIsUserBlocked = true;
+    document.getElementById('uniqueBlockedOverlay').style.display = 'flex';
+    uniqueAddNotification('Has reportado al usuario: ' + reason, null, 'report');
+    uniqueCloseReportModal();
+    document.getElementById('uniqueReportReason').value = '';
+  } else {
+    uniqueShowNotification('Por favor, indica un motivo para el reporte');
+  }
+}
+function uniqueToggleNotificationSettings() {
+  const settings = document.getElementById('uniqueNotificationSettings');
+  settings.classList.toggle('visible');
+}
+function uniqueSaveNotificationSettings() {
+  uniqueNotificationSettings.enabled = document.getElementById('uniqueEnableNotifications').checked;
+  uniqueNotificationSettings.animated = document.getElementById('uniqueAnimatedNotifications').checked;
+  document.getElementById('uniqueNotificationSettings').classList.remove('visible');
+  uniqueShowNotification('Configuración guardada');
+}
+const uniqueInput = document.querySelector('.unique-chat-input input');
+const uniqueSendButton = document.querySelector('.unique-chat-input button');
+uniqueSendButton.addEventListener('click', uniqueSendMessage);
+uniqueInput.addEventListener('keypress', e => {
+  if (e.key === 'Enter') {
+    uniqueSendMessage();
+  }
+});
+let uniqueNotifications = [];
+let uniqueUnreadCount = 0;
+function uniqueAddNotification(message, chatId, type = 'message') {
+  uniqueNotifications.unshift({
+    message,
+    chatId,
+    timestamp: new Date(),
+    type
+  });
+  uniqueUnreadCount++;
+  uniqueUpdateNotificationBadge();
+  uniqueUpdateNotificationsDropdown();
+}
+function uniqueUpdateNotificationBadge() {
+  const badge = document.getElementById('uniqueNotificationBadge');
+  if (uniqueUnreadCount > 0) {
+    badge.style.display = 'block';
+    badge.textContent = uniqueUnreadCount;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+function uniqueUpdateNotificationsDropdown() {
+  const dropdown = document.getElementById('uniqueNotificationsDropdown');
+  if (uniqueNotifications.length === 0) {
+    dropdown.innerHTML = `
+      <div class="unique-notification-item">
+        No hay notificaciones nuevas
+      </div>
+    `;
+    return;
+  }
+  dropdown.innerHTML = uniqueNotifications.map((notif, index) => {
+    let icon = '💬';
+    let backgroundColor = '#fff';
+    switch (notif.type) {
+      case 'rating':
+        icon = '⭐';
+        backgroundColor = '#fff3cd';
+        break;
+      case 'block':
+        icon = '🚫';
+        backgroundColor = '#f8d7da';
+        break;
+      case 'unblock':
+        icon = '🔓';
+        backgroundColor = '#d4edda';
+        break;
+      case 'report':
+        icon = '⚠️';
+        backgroundColor = '#fff3cd';
+        break;
+    }
+    return `
+      <div class="unique-notification-item" 
+           onclick="uniqueHandleNotificationClick('${notif.chatId}')"
+           style="background-color: ${backgroundColor}">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span>${icon}</span>
+          <div>
+            ${notif.message}
+            <div class="unique-chat-preview-time">
+              ${notif.timestamp.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    })}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+function uniqueHandleNotificationClick(chatId) {
+  const chatModal = document.getElementById('uniqueChatModal');
+  const chatContainer = document.querySelector('.unique-chat-container');
+  chatModal.style.display = 'flex';
+  chatContainer.style.display = 'flex';
+  uniqueGoToChat(chatId);
+  const dropdown = document.getElementById('uniqueNotificationsDropdown');
+  dropdown.classList.remove('show');
+}
+function uniqueGoToChat(chatId) {
+  const chatModal = document.getElementById('uniqueChatModal');
+  chatModal.style.display = 'flex';
+  document.getElementById('uniqueNotificationsDropdown').classList.remove('show');
+  uniqueUnreadCount = 0;
+  uniqueUpdateNotificationBadge();
+  const messagesContainer = document.querySelector('.unique-chat-messages');
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+function uniqueCloseChat() {
+  const chatModal = document.getElementById('uniqueChatModal');
+  const chatContainer = document.querySelector('.unique-chat-container');
+  chatModal.style.display = 'none';
+  chatContainer.style.display = 'none';
+  uniqueShowNotification('Chat cerrado');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  uniqueInitializeChatPreviews();
+});
+document.addEventListener('click', e => {
+  const chatModal = document.getElementById('uniqueChatModal');
+  const chatContainer = document.querySelector('.unique-chat-container');
+  const notificationsButton = document.querySelector('.unique-notifications-icon button');
+  const dropdown = document.getElementById('uniqueNotificationsDropdown');
+  if (chatModal.style.display === 'flex' && !chatContainer.contains(e.target) && !notificationsButton.contains(e.target) && !dropdown.contains(e.target)) {
+    uniqueCloseChat();
+  }
+});
+function uniqueInitializeChatPreviews() {
+  const chatPreviews = document.querySelectorAll('.unique-chat-preview');
+  chatPreviews.forEach(preview => {
+    preview.addEventListener('click', () => {
+      chatPreviews.forEach(p => p.classList.remove('active'));
+      preview.classList.add('active');
+      const userName = preview.querySelector('.unique-chat-preview-name').textContent;
+      document.querySelector('.unique-chat-header-info h2').textContent = userName;
+      const messagesContainer = document.querySelector('.unique-chat-messages');
+      messagesContainer.innerHTML = '';
+      const lastMessage = preview.querySelector('.unique-chat-preview-last').textContent;
+      const time = preview.querySelector('.unique-chat-preview-time').textContent;
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'unique-message';
+      messageDiv.innerHTML = `
+        <div class="unique-message-bubble">${lastMessage}</div>
+        <div class="unique-message-time">${time}</div>
+      `;
+      messagesContainer.appendChild(messageDiv);
+      uniqueUserRating = 0;
+      document.querySelector('.unique-user-rating').style.display = 'none';
+      uniqueIsUserBlocked = false;
+      document.getElementById('uniqueBlockedOverlay').style.display = 'none';
+    });
+  });
+}
+function uniqueToggleNotifications() {
+  const dropdown = document.getElementById('uniqueNotificationsDropdown');
+  const chatModal = document.getElementById('uniqueChatModal');
+  const chatContainer = document.querySelector('.unique-chat-container');
+  dropdown.classList.toggle('show');
+  if (uniqueNotifications.length === 0) {
+    chatModal.style.display = 'flex';
+    chatContainer.style.display = 'flex';
+    dropdown.classList.remove('show');
+  }
+}
+</script>
+
+{% endblock %}
+

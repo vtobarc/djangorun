@@ -1,0 +1,87 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %}Página de Inicio - TechVanguard{% endblock %}
+{% block content %}
+<main class="mai">
+
+    <!-- Sección de Inicio -->
+    
+      <section id="inicio" class="hero">
+        <video autoplay loop muted class="hero-video">
+          <source src="{% static 'img/prestadores.mp4' %}" type="video/mp4">
+          Tu navegador no soporta el video.
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <h1 class="index">Encuentra los Mejores Servicios y Profesionales</h1>
+          <p>Conectando Usuarios con Profesionales de Confianza</p>
+          <button class="btn hero-btn">Comenzar Ahora</button>
+        </div>
+      </section>
+      
+      
+
+      <section class="about">
+        <div class="container about-content">
+          <!--img src="placeholder.svg" alt="Sobre Nosotros" class="about-image"-->
+          <video src="{% static 'img/servicios.mp4' %}" alt="Sobre Nosotros" autoplay loop muted class="about-video"></video>
+          <div>
+            <h2>Sobre Nosotros</h2>
+            <p>
+              Nuestra plataforma conecta a usuarios con prestadores de servicios de todo tipo. Desde reparaciones del hogar hasta asesorías profesionales, encuentras lo que necesitas de manera rápida, segura y eficiente.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="services">
+        <div class="container">
+          <h2>SERVICIOS</h2>
+          <div class="services-grid">
+            <div class="service-card">
+              <img src="{% static 'img/reparacion.jpg' %}" alt="Reparaciones">
+              <h3>Reparaciones del Hogar</h3>
+              <p>Encuentra expertos para reparación de electrodomésticos, fontanería, electricidad y más.</p>
+            </div>
+            <div class="service-card">
+              <img src="{% static 'img/asesoria.jpg' %}" alt="Asesoría">
+              <h3>Asesoría Profesional</h3>
+              <p>Conecta con consultores y asesores en diversos campos como marketing, finanzas y tecnología.</p>
+            </div>
+            <div class="service-card">
+              <img src="{% static 'img/cursos.jpg' %}" alt="Clases">
+              <h3>Clases y Cursos</h3>
+              <p>Descubre tutores calificados para clases particulares, cursos de habilidades y formación profesional.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact">
+        <div class="container">
+          <h2>CONTACTO</h2>
+          <div class="contact-content">
+            <!-- Formulario de Contacto -->
+            <form class="contact-form" action="" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="Nombre" name="nombre" required>
+                <input type="tel" placeholder="Teléfono" name="telefono" required>
+                <input type="email" placeholder="Dirección de correo electrónico" name="email" required>
+                <textarea placeholder="Mensaje" name="mensaje" required></textarea>
+                <button type="submit" class="btn">CONTACTO</button>
+            </form>
+            
+            <!-- Mapa -->
+            <div class="map-container">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28346.919287788315!2d-79.922554!3d-2.199939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d2c59f5e78d0fd%3A0xe38d5b2069c8da4b!2sUniversidad%20de%20Guayaquil%2C%20Facultad%20de%20Ingenier%C3%ADa%20Industrial%2C%20Guayaquil%2C%20Ecuador!5e0!3m2!1ses-419!2sec!4v1632356271540!5m2!1ses-419!2sec" 
+                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      
+    </main>
+{% endblock %}

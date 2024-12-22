@@ -1,0 +1,687 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+#imagenPreview img {
+    width: 150px;    /* Puedes ajustar este valor */
+    height: 150px;   /* Mantén las proporciones si es necesario */
+    object-fit: cover;  /* Recorta la imagen si es necesario */
+    margin: 5px;     /* Espaciado entre imágenes */
+}
+
+.mai {
+    padding: 0.1px 0;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    flex-direction: column; /* Para asegurar que el contenido se apile verticalmente */
+    min-height: 100vh; /* Asegura que el contenedor tenga suficiente altura */
+
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+#solicitudForm {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#imagenPreview {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#imagenPreview img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.solicitudes-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.solicitud-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.solicitud-item:hover {
+    transform: translateY(-5px);
+}
+
+.solicitud-item h3 {
+    margin-top: 0;
+    color: #007bff;
+}
+
+.solicitud-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+    }
+    
+    .filters > * {
+        margin-bottom: 10px;
+    }
+
+    .solicitudes-lista {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+}
+
+
+/* Estilo del toast */
+.toast {
+    position: fixed;
+    top: 20px; /* Ajusta para posicionar donde desees */
+    right: 20px;
+    background-color: #4caf50; /* Verde para éxito */
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Mostrar toast */
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* List view styles */
+.solicitudes-lista[style*="display: block"] {
+    display: block !important;
+}
+
+.solicitudes-lista[style*="display: block"] .solicitud-item {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+
+.solicitudes-lista[style*="display: block"] .solicitud-item h3 {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.solicitudes-lista[style*="display: block"] .solicitud-item img {
+    width: 200px;
+    height: 150px;
+    margin-right: 20px;
+}
+
+.solicitudes-lista[style*="display: block"] .solicitud-item p {
+    flex: 1;
+    margin: 0;
+}
+
+/* Update filters container */
+.filters {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filters input,
+.filters select {
+    flex: 1;
+    min-width: 200px;
+}
+
+.view-toggle {
+    flex: 0 0 auto;
+}
+
+
+
+
+
+.solicitud-item {
+    margin-bottom: 16px;
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.1) !important; /* Ajusta opacidad */
+}
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    z-index: 1040; /* Bootstrap por defecto */
+}
+.modal-backdrop {
+    background-color: transparent !important;
+    display: none !important;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.pagination span {
+    font-weight: bold;
+    color: #555;
+}
+
+.page-link {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.page-link:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.page-link[aria-disabled="true"] {
+    background-color: #cccccc;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    margin: 0 5px;
+}
+
+
+
+/* Estilos generales */
+#solicitudesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+/* Estilo general para el contenedor de las solicitudes */
+.solicitudes-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Vista en lista, estilo tipo detalle */
+.solicitudes-lista.lista .solicitud-item {
+    display: flex;
+    flex-direction: row;  /* Alineamos los elementos en una fila */
+    justify-content: space-between;  /* Espacio entre los elementos */
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+/* Dentro de cada solicitud, podemos definir áreas específicas */
+.solicitud-item .titulo,
+.solicitud-item .estado,
+.solicitud-item .progreso,
+.solicitud-item .fecha {
+    width: 100%;  /* Definimos un tamaño fijo para las columnas */
+    overflow: hidden;
+    text-overflow: ellipsis;  /* Para que se recorte el texto si es largo */
+    white-space: nowrap;  /* Para evitar que el texto se rompa en varias líneas */
+}
+
+/* No mostrar la foto en la vista lista */
+.solicitudes-lista.lista .solicitud-item .foto {
+    display: none;
+}
+
+/* Vista en cuadrícula */
+/* Estilo para las solicitudes en cuadrícula */
+.solicitudes-lista.cuadricula .solicitud-item {
+    display: inline-block;
+    width: 30%; /* 3 elementos por fila */
+    margin: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd; /* Añadimos borde para visualización */
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px; /* Esquinas redondeadas */
+    background-color: #f9f9f9;
+}
+
+/* Limitar el tamaño de la imagen en la cuadrícula */
+.solicitudes-lista.cuadricula .solicitud-item img {
+    width: 100%;  /* Hace que la imagen ocupe todo el contenedor */
+    height: 150px; /* Tamaño fijo para la imagen */
+    object-fit: cover; /* Asegura que la imagen se recorte de forma adecuada */
+    border-radius: 5px; /* Bordes redondeados en las imágenes */
+}
+
+/* Aseguramos que los textos sean más compactos y ajusten el contenedor */
+.solicitudes-lista.cuadricula .solicitud-item h3,
+.solicitudes-lista.cuadricula .solicitud-item p {
+    white-space: nowrap; /* Para evitar que el texto se rompa en varias líneas */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Poner puntos suspensivos cuando el texto es largo */
+    margin: 10px 0;
+}
+
+/* Estilo para los botones */
+.solicitudes-lista.cuadricula .solicitud-item .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Botones más pequeños en vista cuadrícula */
+.solicitudes-lista.cuadricula .solicitud-item .action-buttons button {
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* General Styles */
+
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tab-button.active {
+    background-color: #fff;
+    border-bottom: 2px solid #3498db;
+}
+
+.tab-content {
+    display: none;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #ecf0f1;
+    color: #333;
+}
+
+.btn-success {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+.view-toggle {
+    display: flex;
+}
+
+.view-toggle .btn {
+    margin-left: 10px;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filters input,
+.filters select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Requests List */
+.requests-list {
+    display: grid;
+    gap: 20px;
+}
+
+.requests-list.list-view {
+    grid-template-columns: 1fr;
+}
+
+.requests-list.grid-view {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.request-card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 15px;
+}
+
+.request-card h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.card-actions .btn {
+    margin-left: 10px;
+}
+
+/* Work History Table */
+#workHistoryTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#workHistoryTable th,
+#workHistoryTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#workHistoryTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content label {
+    margin-top: 10px;
+}
+
+.modal-content input,
+.modal-content textarea {
+    margin-top: 5px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.modal-content button[type="submit"] {
+    margin-top: 20px;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+    }
+
+    .requests-list.grid-view {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+}
+

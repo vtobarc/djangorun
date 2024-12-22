@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        /* Estilos específicos para la página de agregar método de pago */
+        .payment-form {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        .payment-form .former {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .payment-form h2 {
+            font-size: 24px;
+            color: #007bff;
+        }
+
+        .payment-form .btn-close {
+            background-color: transparent;
+            border: none;
+            font-size: 18px;
+            color: #6c757d;
+            cursor: pointer;
+        }
+
+        .payment-form .btn-close:hover {
+            color: #343a40;
+        }
+
+        .payment-form .form-fields {
+            margin-bottom: 20px;
+        }
+
+        .payment-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .payment-form .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .payment-form .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .payment-form .button-container {
+            text-align: center;
+        }
+
+        .payment-form .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .payment-form .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <form method="POST" class="payment-form">
+        <div class="former">
+            <h2>Agregar Método de Pago</h2>
+            <a href="{% url 'profile' %}" class="btn-close" aria-label="Cerrar">
+                &times;
+            </a>
+        </div>
+
+        {% csrf_token %}
+
+        <div class="form-fields">
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error-message">{{ field.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="button-container">
+            <button type="submit" class="btn btn-primary">Agregar Método de Pago</button>
+           
+
+        </div>
+    </form>
+{% endblock %}

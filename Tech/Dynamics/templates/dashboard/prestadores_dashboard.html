@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard de Prestadores{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title">Dashboard de Prestadores</h1>
+    <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Usuario</th>
+                <th>Fecha de Solicitud</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for solicitud in solicitudes %}
+            <tr>
+                <td>{{ solicitud.titulo }}</td>
+                <td>{{ solicitud.usuario.first_name }} {{ solicitud.usuario.last_name }}</td>
+                <td>{{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}</td>
+                <td>
+                    <span class="tag {% if solicitud.estado == 'pendiente' %}is-warning{% elif solicitud.estado == 'en_proceso' %}is-info{% elif solicitud.estado == 'finalizado' %}is-success{% else %}is-danger{% endif %}">
+                        {{ solicitud.get_estado_display }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'solicitud_detalle' solicitud.id %}" class="button is-small is-primary">Ver Detalles</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- Paginación -->
+<div class="pagination">
+    {% if solicitudes.has_previous %}
+        <a href="?page={{ solicitudes.previous_page_number }}" class="page-link">« Anterior</a>
+    {% else %}
+        <a class="page-link" aria-disabled="true">« Anterior</a>
+    {% endif %}
+
+    <span>Página {{ solicitudes.number }} de {{ solicitudes.paginator.num_pages }}</span>
+
+    {% if solicitudes.has_next %}
+        <a href="?page={{ solicitudes.next_page_number }}" class="page-link">Siguiente »</a>
+    {% else %}
+        <a class="page-link" aria-disabled="true">Siguiente »</a>
+    {% endif %}
+</div>
+{% endblock %}
+

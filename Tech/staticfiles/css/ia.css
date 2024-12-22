@@ -1,0 +1,137 @@
+:root {
+  --primary: #2962ff;
+  --surface: #ffffff;
+  --background: #f5f5f5;
+  --text: #333333;
+}
+
+
+
+/* Floating button styles */
+.floating-chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.floating-chat-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+.floating-chat-button svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+/* Chat window styles */
+.chat-window {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  width: 350px;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.chat-window.active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chat-header {
+  padding: 15px;
+  background: var(--primary);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-messages {
+  padding: 15px;
+  height: 300px;
+  overflow-y: auto;
+  background: #f8f9fa;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 80%;
+}
+
+.bot-message {
+  background: white;
+  margin-right: auto;
+  border-bottom-left-radius: 2px;
+  color: black !important;
+}
+
+.user-message {
+  background: var(--primary);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-input {
+  padding: 15px;
+  border-top: 1px solid #000000;
+  display: flex;
+  gap: 10px;
+  color: black !important;
+
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.chat-input button {
+  padding: 8px 15px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Animations */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+  40% {transform: translateY(-5px);}
+  60% {transform: translateY(-3px);}
+}
+
+.bounce {
+  animation: bounce 2s infinite;
+}

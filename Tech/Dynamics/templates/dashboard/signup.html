@@ -1,0 +1,154 @@
+<!-- signup.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Registro - TechVanguard{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <div class="register-box">
+        <div class="register-image-section">
+            <img src="{% static 'img/Landscape.jpg' %}" alt="Register illustration" class="register-image">
+        </div>
+        <div class="register-form-section">
+            <div class="register-header">
+                <h1 class="register-title">Crear cuenta</h1>
+                <p class="register-subtitle">Completa tus datos para registrarte</p>
+            </div>
+            <form class="register-form" method="post">
+                {% csrf_token %}
+                
+                <!-- {% if messages %}
+                    {% for message in messages %}
+                        <p class="error-message">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                Cédula -->
+                <div class="register-input-group">
+                    <input type="text" name="cedula" class="register-input" placeholder="Cédula" value="{{ request.POST.cedula }}" required>
+                    {% if form.cedula.errors %}
+                        <p class="error-message">{{ form.cedula.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Nombre -->
+                <div class="register-input-group">
+                    <input type="text" name="nombre" class="register-input" placeholder="Nombre" value="{{ request.POST.nombre }}" required>
+                    {% if form.nombre.errors %}
+                        <p class="error-message">{{ form.nombre.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Apellido -->
+                <div class="register-input-group">
+                    <input type="text" name="apellido" class="register-input" placeholder="Apellido" value="{{ request.POST.apellido }}" required>
+                    {% if form.apellido.errors %}
+                        <p class="error-message">{{ form.apellido.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Email -->
+                <div class="register-input-group">
+                    <input type="email" name="email" class="register-input" placeholder="Correo electrónico" value="{{ request.POST.email }}" required>
+                    {% if form.email.errors %}
+                        <p class="error-message">{{ form.email.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Teléfono -->
+                <div class="register-input-group">
+                    <input type="tel" name="telefono" class="register-input" placeholder="Teléfono" value="{{ request.POST.telefono }}" required>
+                    {% if form.telefono.errors %}
+                        <p class="error-message">{{ form.telefono.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Dirección -->
+                <div class="register-input-group">
+                    <input type="text" name="ciudad" class="register-input" placeholder="Ciudad" value="{{ request.POST.ciudad }}" required>
+                    {% if form.ciudad.errors %}
+                        <p class="error-message">{{ form.ciudad.errors }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="register-input-group">
+                    <input type="text" name="provincia" class="register-input" placeholder="Provincia" value="{{ request.POST.provincia }}" required>
+                    {% if form.provincia.errors %}
+                        <p class="error-message">{{ form.provincia.errors }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="register-input-group">
+                    <input type="text" name="pais" class="register-input" placeholder="País" value="{{ request.POST.pais }}" required>
+                    {% if form.pais.errors %}
+                        <p class="error-message">{{ form.pais.errors }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="register-input-group">
+                    <select name="rol" class="register-input" required>
+                        <option value="Usuario" selected>Usuario</option>
+                        <option value="Servidor">Servidor</option>
+                    </select>
+                    {% if form.rol.errors %}
+                        <p class="error-message">{{ form.rol.errors }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="register-input-group">
+                    <input type="text" name="direccion" class="register-input" placeholder="Dirección" value="{{ request.POST.direccion }}" required>
+                    {% if form.direccion.errors %}
+                        <p class="error-message">{{ form.direccion.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Username -->
+                <div class="register-input-group">
+                    <input type="text" name="username" class="register-input" placeholder="Nombre de usuario" value="{{ request.POST.username }}" required>
+                    {% if form.username.errors %}
+                        <p class="error-message">{{ form.username.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Contraseña -->
+                <div class="register-input-group">
+                    <input type="password" name="password1" class="register-input" placeholder="Contraseña" required>
+                    {% if form.password1.errors %}
+                        <p class="error-message">{{ form.password1.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Confirmar Contraseña -->
+                <div class="register-input-group">
+                    <input type="password" name="password2" class="register-input" placeholder="Confirmar contraseña" required>
+                    {% if form.password2.errors %}
+                        <p class="error-message">{{ form.password2.errors }}</p>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="register-btn register-btn-primary">REGISTRARSE</button>
+
+                <div class="register-divider">
+                    <span class="register-divider-text">O REGÍSTRATE CON</span>
+                </div>
+
+                <div class="register-social-buttons">
+                    <button type="button" class="register-social-btn">
+                        <img src="{% static 'img/facebook_128.png' %}" alt="Facebook" class="register-social-icon">
+                    </button>
+                    <button type="button" class="register-social-btn">
+                        <img src="{% static 'img/google_128.png' %}" alt="Google" class="register-social-icon">
+                    </button>
+                    <button type="button" class="register-social-btn">
+                        <img src="{% static 'img/linkedin_128.png' %}" alt="LinkedIn" class="register-social-icon">
+                    </button>
+                </div>
+
+                <div class="register-login-link">
+                    <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}" class="register-link">Inicia sesión aquí</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

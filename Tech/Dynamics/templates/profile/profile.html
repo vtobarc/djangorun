@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+
+
+</style>
+<style>
+  
+</style>
+
+<!-- Mostrar mensajes de éxito o error -->
+<!-- Mostrar mensajes de éxito o error -->
+<!--
+{% if messages %}
+  <div class="alert alert-success" role="alert">
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+{% endif %}
+
+-->
+<div id="notification" class="notification"></div>
+    <div id="toast" class="toast"></div>
+<div class="profile-container">
+    <div id="notification-container"></div>
+
+    <div class="cover-image">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'update_cover_photo' %}">
+            {% csrf_token %}
+            <div class="cover-image">
+                {% if user.cover_photo %}
+                    <img id="cover-photo" src="{{ user.cover_photo.url }}" alt="Imagen de portada">
+                {% else %}
+                    <img id="cover-photo" src="{% static 'images/default-cover.jpg' %}" alt="Imagen de portada">
+                {% endif %}
+                
+                <input type="file" id="cover-photo-input" name="cover_photo" style="display: none;" accept="image/*">
+                
+                <button id="change-cover" type="button" class="btn btn-secondary">Cambiar Portada</button>
+            </div>
+        </form>
+    </div>
+
+    
+  
+
+    <div class="profile-content">
+        <div class="sidebar">
+            <div class="profile-picture-container">
+                {% if user.foto_perfil %}
+                    <img src="{{ user.foto_perfil.url }}" alt="Foto de perfil" class="profile-picture">
+                {% else %}
+                    <img src="{% static 'perfil/default_profile_picture.jpg' %}" alt="Foto de perfil" class="profile-picture">
+                {% endif %}
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Campo para subir foto de perfil -->
+                    <input type="file" name="foto_perfil" id="foto_perfil" style="display:none;" onchange="this.form.submit()">
+                    
+                </form>
+            </div>
+            <nav>
+                <button class="nav-button active" data-target="basic-info">Datos Personales</button>
+                <button class="nav-button" data-target="professional-info">Perfil Profesional</button>
+                <button class="nav-button" data-target="client-info">Perfil Cliente</button>
+                <button class="nav-button" data-target="security">Seguridad</button>
+            </nav>
+        </div>
+        <div class="main-content">
+            <form method="post" enctype="multipart/form-data" id="profile-form">
+                {% csrf_token %}
+                <div id="basic-info" class="tab-content active">
+                    <h2>Datos Personales</h2>
+                    {% for field in form %}
+                        {% if field.name in 'cedula,first_name,last_name,email,telefono,direccion,ciudad,provincia,pais,rol,fecha_nacimiento,genero,idioma_preferido,foto_perfil' %}
+                         
+                        <div class="form-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <div id="professional-info" class="tab-content">
+                    <h2>Perfil Profesional</h2>
+                    {% for field in form %}
+                        {% if field.name in 'titulo_profesional,biografia,linkedin_url,github_url,portfolio_url,habilidades_tecnicas,habilidades_blandas' %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <h3>Educación</h3>
+<div id="education-list">
+    {% for edu in education %}
+        <div class="education-item">
+            <p>{{ edu.institucion }} - {{ edu.titulo }}</p>
+            <p>{{ edu.fecha_inicio }} - {{ edu.fecha_fin|default:"Presente" }}</p>
+            <!-- Iconos para editar y eliminar -->
+            <a href="{% url 'edit_education' edu.id %}" class="btn btn-sm btn-warning">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a href="{% url 'delete_education' edu.id %}" class="btn btn-sm btn-danger">
+                <i class="fas fa-trash-alt"></i> Eliminar
+            </a>
+        </div>
+    {% endfor %}
+</div>
+<a href="{% url 'add_education' %}" class="btn btn-primary" id="add-education">
+    <i class="fas fa-plus"></i> Agregar Educación
+</a>
+<h3>Experiencia</h3>
+<div id="experience-list">
+    {% for exp in experience %}
+        <div class="experience-item">
+            <p>{{ exp.empresa }} - {{ exp.cargo }}</p>
+            <p>{{ exp.fecha_inicio }} - {{ exp.fecha_fin|default:"Presente" }}</p>
+            <p>{{ exp.descripcion }}</p>
+            <!-- Botón Editar -->
+            <a href="{% url 'edit_experience' exp.id %}" class="btn btn-sm btn-warning">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+
+            <!-- Botón Eliminar -->
+            <a href="{% url 'delete_experience' exp.id %}" class="btn btn-danger btn-sm" 
+               onclick="return confirm('¿Estás seguro de que quieres eliminar esta experiencia?');">
+                <i class="fas fa-trash"></i> Eliminar
+            </a>
+            
+        </div>
+    {% endfor %}
+</div>
+<a href="{% url 'add_experience' %}" class="btn btn-primary" id="add-experience">
+    <i class="fas fa-plus"></i> Agregar Experiencia
+</a>
+                </div>
+
+                <div id="client-info" class="tab-content">
+                    <h2>Perfil Cliente</h2>
+                    <h3>Métodos de Pago</h3>
+                    <div id="payment-methods-list">
+                        {% for method in payment_methods %}
+                            <div class="payment-method-item">
+                                <p>{{ method.tipo_tarjeta }} - **** **** **** {{ method.numero_tarjeta|slice:"-4:" }}</p> 
+                                <a href="{% url 'delete_payment_method' method.id %}" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash"></i> Eliminar
+                                </a>
+                               
+                            </div>
+                            
+                        {% endfor %}
+                        
+                    </div>
+                    <a href="{% url 'add_payment_method' %}" class="btn btn-primary" id="add-payment-method">Agregar Método de Pago</a>
+                    
+                </div>
+
+                <div id="security" class="tab-content">
+                    <h2>Seguridad</h2>
+                    <a href="{% url 'change_password' %}" class="btn btn-primary">Cambiar Contraseña</a>
+                    <p>Último acceso: {{ ultimo_acceso }}</p>
+                    <p>IP de registro: {{ ip_registro }}</p>
+                    
+                </div>
+
+                <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}

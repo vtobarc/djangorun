@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="mai">
+    <form method="POST" class="experience-form">
+        <div class="former">
+            <h2>Agregar Experiencia</h2>
+            <a href="{% url 'profile' %}" class="btn-close" aria-label="Cerrar">
+                
+            </a>
+        </div>
+        {% csrf_token %}
+    
+        <div class="form-fields">
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="error-message">{{ field.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="button-container">
+            <button type="submit" class="btn btn-primary">Agregar Experiencia</button>
+        </div>
+    </form>
+</main>
+{% endblock %}
+

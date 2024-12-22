@@ -1,0 +1,77 @@
+<!-- login.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login - TechVanguard{% endblock %}
+
+{% block content %}
+<main class=mai> 
+
+<div class="login-container">
+    
+    <div class="login-box">
+        <div class="login-image-section">
+            <img src="{% static 'img/Landscape.jpg' %}" alt="Login illustration" class="login-image">
+        </div>
+        <div class="login-form-section">
+            <div class="login-header">
+                <h1 class="login-title">Welcome!</h1>
+               
+            {% if messages %}
+    
+                <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                <!--{{ message }}-->
+            </div>
+        {% endfor %}
+
+        
+    </div>
+{% endif %}
+                <p class="login-subtitle">Sign in to your Account</p>
+            </div>
+            
+            <form class="login-form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input type="text" name="username" id="username" class="login-input" placeholder="Username" required>
+                <input type="password" name="password" id="password" class="login-input" placeholder="Password" required>
+                
+                {% if error %}
+                <p class="error-message">{{ error }}</p>
+                {% endif %}
+            
+                <div class="login-forgot-password">
+                    <a href="{% url 'password_reset' %}" class="login-link">Forgot Password?</a>
+                </div>
+            
+                <button type="submit" class="login-btn login-btn-primary">SIGN IN</button>
+                <button type="button" class="login-btn login-btn-outline" onclick="window.location.href='{% url 'signup' %}'">SIGN UP</button>
+
+                <div class="login-divider">
+                    <span class="login-divider-text">OR LOGIN WITH</span>
+                </div>
+                <div class="login-social-buttons">
+                    <button type="button" class="login-social-btn">
+                        <img src="{% static 'img/facebook_128.png' %}" alt="Facebook" class="login-social-icon">
+                    </button>
+                    <button type="button" class="login-social-btn">
+                        <img src="{% static 'img/google_128.png' %}" alt="Google" class="login-social-icon">
+                    </button>
+                    <button type="button" class="login-social-btn">
+                        <img src="{% static 'img/linkedin_128.png' %}" alt="LinkedIn" class="login-social-icon">
+                    </button>
+                </div>
+
+                <div class="login-register-link">
+                    <p>¿No tienes una cuenta? <a href="{% url 'signup' %}"  class="login-link">Regístrate aquí</a></p>
+                </div>
+            </form>   
+            
+            
+        </div>
+    </div>
+</div>
+
+</main>
+
+{% endblock %}

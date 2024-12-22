@@ -1,0 +1,186 @@
+<html><head><base href="." /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>404 - Astronauta Perdido</title><style>
+    *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        background: linear-gradient(45deg, #0b0b2a, #1a1a4a);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        color: white;
+    }
+    
+    .space {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+    }
+    
+    .stars {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .star {
+        position: absolute;
+        background: white;
+        border-radius: 50%;
+        animation: twinkle 1s infinite alternate;
+    }
+    
+    .ufo {
+        position: absolute;
+        width: 150px;
+        height: 80px;
+        animation: ufoFloat 15s infinite linear;
+        left: -150px;
+        top: 20%;
+    }
+    
+    .planet {
+        position: absolute;
+        border-radius: 50%;
+        animation: rotate 30s infinite linear;
+    }
+    
+    .asteroid {
+        position: absolute;
+        animation: float 20s infinite linear;
+    }
+    
+    .error-text {
+        position: fixed;
+        text-align: center;
+        z-index: 100;
+    }
+    
+    .error-text h1 {
+        font-size: 8rem;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        margin-bottom: 1rem;
+    }
+    
+    .error-text p {
+        font-size: 1.5rem;
+        color: #a0a0ff;
+    }
+    
+    @keyframes twinkle {
+        from { opacity: 0.3; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes ufoFloat {
+        0% { transform: translateX(0) rotate(5deg); left: -150px; }
+        50% { transform: translateX(calc(100vw + 150px)) rotate(-5deg); }
+        50.01% { transform: translateX(calc(100vw + 150px)) rotate(-5deg); left: 100%; }
+        50.02% { left: -150px; }
+        100% { transform: translateX(0) rotate(5deg); left: -150px; }
+    }
+    
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    @keyframes float {
+        from { transform: translate(-100%, -100%) rotate(0deg); }
+        to { transform: translate(100vw, 100vh) rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+        .error-text h1 {
+            font-size: 4rem;
+        }
+        
+        .error-text p {
+            font-size: 1rem;
+        }
+    }
+    </style></head><body>
+        <div class="error-text">
+            <h1>404</h1>
+            <p>¡Houston, tenemos un problema!</p>
+            <p>La página que buscas se perdió en el espacio...</p>
+        </div>
+        
+        <div class="space">
+            <div class="stars"></div>
+            <svg class="ufo" viewBox="0 0 100 50">
+                <!-- Cúpula -->
+                <ellipse cx="50" cy="20" rx="20" ry="15" fill="#88ccff" opacity="0.8"/>
+                <!-- Cuerpo principal -->
+                <ellipse cx="50" cy="25" rx="35" ry="10" fill="silver"/>
+                <!-- Luces -->
+                <circle cx="30" cy="25" r="3" fill="#ffff00"/>
+                <circle cx="50" cy="25" r="3" fill="#ffff00"/>
+                <circle cx="70" cy="25" r="3" fill="#ffff00"/>
+                <!-- Rayo tractor -->
+                <path d="M50,35 L40,50 L60,50 Z" fill="#88ccff" opacity="0.3"/>
+            </svg>
+    
+            <!-- Planeta rojo (Marte) -->
+            <svg class="planet" style="width: 100px; height: 100px; right: 20%; top: 60%;" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="#ff6b6b"/>
+                <ellipse cx="40" cy="40" rx="15" ry="10" fill="#ff8585"/>
+            </svg>
+    
+            <!-- Planeta anillado (Saturno) -->
+            <svg class="planet" style="width: 150px; height: 150px; left: 15%; top: 30%;" viewBox="0 0 150 150">
+                <ellipse cx="75" cy="75" rx="40" ry="40" fill="#ffd700"/>
+                <path d="M35 75 Q 75 95 115 75 Q 75 55 35 75" fill="none" stroke="#ffd700" stroke-width="4"/>
+            </svg>
+    
+            <!-- Asteroides -->
+            <svg class="asteroid" style="width: 30px; height: 30px;" viewBox="0 0 30 30">
+                <path d="M15,5 L20,10 L25,15 L20,20 L15,25 L10,20 L5,15 L10,10 Z" fill="#a0a0a0"/>
+            </svg>
+            <svg class="asteroid" style="width: 20px; height: 20px; animation-delay: -5s;" viewBox="0 0 20 20">
+                <path d="M10,2 L15,5 L18,10 L15,15 L10,18 L5,15 L2,10 L5,5 Z" fill="#808080"/>
+            </svg>
+        </div>
+    
+    <script>
+    function createStars() {
+        const stars = document.querySelector('.stars');
+        const numberOfStars = 200;
+        
+        for(let i = 0; i < numberOfStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 1 + 's';
+            stars.appendChild(star);
+        }
+    }
+    
+    function createAsteroids() {
+        const space = document.querySelector('.space');
+        const numberOfAsteroids = 5;
+        
+        for(let i = 0; i < numberOfAsteroids; i++) {
+            const asteroid = document.createElement('div');
+            asteroid.className = 'asteroid';
+            asteroid.style.left = Math.random() * 100 + '%';
+            asteroid.style.top = Math.random() * 100 + '%';
+            asteroid.style.animationDelay = Math.random() * 10 + 's';
+            space.appendChild(asteroid);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        createStars();
+        createAsteroids();
+    });
+    </script></body></html>

@@ -1,0 +1,75 @@
+{% load static %}
+<!-- base.html # Plantilla base para todas las páginas-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechVanguard{% endblock %}</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" href="{% static 'css/in-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/servidor_sol_detalle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/historial.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile_config.css' %}">
+    <link rel="stylesheet" href="{% static 'css/messaging.css' %}">
+    <link rel="stylesheet" href="{% static 'css/messaging-system.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ia.css' %}">
+
+    <!-- External CSS libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@lucide-icons/react@0.6.2/dist/lucide.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>            
+<body>
+  
+  {% include 'shared/navbar.html' %}
+  
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    
+    {% include 'shared/footer.html' %}
+
+<!-- External JS libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide-icons@0.1.3/dist/lucide.js"></script>
+<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<!-- Static JS files -->
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/cliente.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/profile_config.js' %}"></script>
+<script src="{% static 'js/servidor.js' %}"></script>
+<script src="{% static 'js/messaging.js' %}"></script>
+<script src="{% static 'js/message.js' %}"></script>
+<script src="{% static 'js/ia.js' %}"></script>
+<script src="{% static 'js/historial.js'%}"></script>
+<script src="{% static 'js/unique-chat.js' %}"></script>
+
+<!-- React component rendering -->
+<script type="text/babel">
+    function renderMessagingSystem() {
+        ReactDOM.render(
+            <MessagingSystem />,
+            document.getElementById('messaging-system')
+        );
+    }
+</script>
+
+</body>
+</html>

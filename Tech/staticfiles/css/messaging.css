@@ -1,0 +1,472 @@
+.icon-container {
+  display: flex;
+  gap: 10px; /* Espacio entre los íconos */
+  align-items: center;
+}
+
+.notification-icon, .message-icon {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0; /* Eliminar márgenes que puedan alterar la posición */
+
+}
+/* Ajustar la posición de los iconos */
+
+.notification-icon, .message-icon {
+  position: relative;
+  cursor: pointer;
+  margin: 0rem; /* Reducir el margen */
+  display: flex;
+  align-items: center;
+  flex-shrink: 0; /* Evita que se redimensionen */
+}
+
+
+.notification-icon i, .message-icon i {
+  font-size: 1.5em;
+  color: #333;
+  margin-left: 0px; /* Ajustar separación */
+
+}
+/* Estilo para los íconos */
+.notification-icon i,
+.message-icon i {
+  color: white; /* Cambia el color del ícono a blanco */
+  font-size: 1.2em; /* Ajusta el tamaño si es necesario */
+  margin-left: 0px; /* Ajusta la separación */
+}
+.notification-icon i:hover,
+.message-icon i:hover {
+  color: #ff6600; /* El color cambia a naranja */
+}
+
+/* Estilo para el badge */
+/* Estilo para el badge */
+.badge {
+  position: absolute;
+  top: 0px;  /* Ajusta para que esté más cerca del ícono (más cerca del borde superior) */
+  right: -5px; /* Ajusta para que esté más cerca del borde derecho */
+  background-color: #ff0000;
+  color: white;
+  font-size: 10px; /* Puedes ajustar el tamaño del texto para que se vea mejor */
+  border-radius: 20px;  /* Hace el badge completamente redondo */
+  width: 15px;  /* Ajusta el tamaño del badge (ancho) */
+  height: 15px;  /* Ajusta el tamaño del badge (alto) */
+  display: flex;
+  justify-content: center;  /* Centra el texto */
+  align-items: center;  /* Centra el texto verticalmente */
+  padding: 0;  /* Elimina el padding */
+  margin-left: 0; /* Elimina el margen adicional */
+}
+
+/* Contenedor del Dropdown (notificaciones y mensajes) */
+.notification-icon .dropdown{
+    position: absolute; /* Asegura que no mueva otros elementos */
+    top: 100%; /* Aparece justo debajo del icono */
+    right: 0; /* Cambiado a right en lugar de left */
+    background-color: white;
+    /*border: 1px solid #ddd;*/
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 270px; /* Ajusta el tamaño según tus necesidades */
+    display: none; /* Inicia oculto */
+    z-index: 1000; /* Asegura que el dropdown esté por encima de otros elementos */
+    max-height: 390px; /* Limita la altura */
+    border-radius: 0px 0px 0px 0px;
+
+  }
+
+
+
+
+/* Mostrar el dropdown cuando se hace clic en el icono */
+.dropdown.show {
+  display: block;
+}
+
+
+.dropdown.active {
+  display: block;
+}
+
+.dropdown-mens.active {
+  display: block;
+}
+
+
+.modal-header {
+  padding: 1rem;
+  background: #00205B;
+  color: white;
+  border-radius: 12px 12px 0 0;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* Estilo para las notificaciones o mensajes */
+
+.notification-item{
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.3s;
+  color: black;
+
+}
+
+
+
+.view-more {
+  padding: 8px;
+  text-align: center;
+  background: #00205B;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.view-more:hover {
+  background: #005f9e;
+}
+
+.notification-item:hover {
+  background: #f5f5f5;
+}
+
+
+
+/* Theme Toggle and Notification Button */
+.theme-toggle,
+.notification-button {
+
+  margin-left: 10px; /* Ajusta la separación */
+
+}
+
+
+
+
+
+
+
+.navbar {
+  background: #ffffff;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content:  flex-end;
+  align-items: center;
+  position: fixed; /* Se mantiene fijo en la parte superior */
+  width: 100%;
+  top: 0;
+  z-index: 100;
+  white-space: nowrap; /* Evita que el contenido se reorganice */
+
+}
+
+.modal-header {
+  padding: 1rem;
+    background: #00205B;
+    color: white;
+    border-radius: 12px 12px 0 0;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+/* Cerrar el modal */
+.dropdown-close {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+
+.view-more {
+  padding: 10px;
+  background: #f1f1f1;
+  text-align: center;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+.view-more {
+  padding: 8px;
+  text-align: center;
+  background: #00205B;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.view-more:hover {
+  background: #00205B;
+}
+
+.notification-detail {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  z-index: 1000;
+  display: none;
+  max-width: 500px;
+  width: 90%;
+  color: black;
+
+}
+
+.notification-detail.active {
+  display: block;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 999;
+}
+
+
+
+.close-detail {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.chat-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  height: 435px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: none;
+  color: black;
+  z-index: 1050; /* Asegúrate de que esté encima de elementos principales */
+
+
+}
+
+.chat-container.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  padding: 1rem;
+  background: #075e54;
+  color: white;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.message {
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  max-width: 80%;
+}
+
+.received {
+  background: #f0f0f0;
+  align-self: flex-start;
+}
+
+.sent {
+  background: #dcf8c6;
+  align-self: flex-end !important;
+  margin-left: auto;
+}
+
+.chat-input {
+  display: flex;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.chat-input input {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  margin-right: 0.5rem;
+}
+
+.chat-input button {
+  background: #075e54;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.main-content {
+  margin-top: 80px;
+  padding: 1rem;
+}
+
+
+/* Estilos generales del modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.modal-header h2 {
+  font-size: 18px;
+  margin: 0;
+  color: #ddd;
+}
+
+.close-modal {
+  font-size: 18px;
+  cursor: pointer;
+  color: #888;
+}
+
+.modal-body {
+  margin-top: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+
+
+.modal-footer {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* Estilos para el botón */
+.send-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-color); /* Color similar al de WhatsApp */
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 50%; /* Hace que el botón sea redondeado */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 20px; /* Tamaño del ícono */
+}
+
+/* Efecto hover similar al de WhatsApp */
+.send-btn:hover {
+  background-color: #128C7E; /* Color verde similar al de WhatsApp */
+}
+
+/* Estilo para el ícono dentro del botón */
+.send-btn i {
+  font-size: 20px; /* Tamaño del ícono */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

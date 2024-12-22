@@ -1,0 +1,113 @@
+<!-- templates/add_education.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    /* Estilos generales para el formulario */
+    form {
+        max-width: 500px;
+        margin: 0 auto; /* Centrar el formulario en la página */
+        padding: 20px;
+        background-color: #f9f9f9; /* Fondo claro */
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        border: 1px solid #ddd; /* Borde gris claro */
+    }
+    
+    /* Estilo de los campos del formulario */
+    form input[type="text"],
+    form input[type="date"],
+    form select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        border: 1px solid #ccc; /* Borde gris claro */
+        border-radius: 4px;
+        box-sizing: border-box; /* Asegura que el padding no rompa el diseño */
+    }
+    
+    /* Estilo del botón */
+    form button[type="submit"] {
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: #007bff; /* Color azul Bootstrap */
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    form button[type="submit"]:hover {
+        background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+    }
+    
+    /* Título */
+    h2 {
+        text-align: center;
+        color: #333; /* Color del texto */
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 20px;
+    }
+    
+    /* Bloque principal */
+    body {
+        background-color: #f4f4f4; /* Fondo del cuerpo */
+        font-family: 'Arial', sans-serif;
+    }
+    
+    /* Estilo para contenedor principal */
+    .content-container {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra alrededor del contenedor */
+    }
+    
+    /* Contenedor para los botones */
+    .form-buttons {
+        display: flex;
+        justify-content: space-between; /* Botones separados horizontalmente */
+        align-items: center;
+        margin-top: 20px;
+    }
+    
+    /* Estilo para el botón de cancelar */
+    .btn-secondary {
+        text-decoration: none;
+        display: inline-block;
+        padding: 10px 15px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #6c757d; /* Gris Bootstrap */
+        background-color: #f8f9fa; /* Fondo claro */
+        border: 1px solid #ced4da; /* Borde gris claro */
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        text-align: center;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #e2e6ea; /* Gris más oscuro al pasar el mouse */
+        color: #495057; /* Texto más oscuro */
+    }
+    
+
+</style>
+
+<h2>Add Education</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Add Education</button>
+    <a href="{% url 'profile' %}" class="btn btn-secondary">Cancelar</a>
+
+</form>
+
+{% endblock %}

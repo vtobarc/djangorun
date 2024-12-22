@@ -1,0 +1,8 @@
+{% for message in messages %}
+<div class="message {% if not message.is_read %}unread{% endif %}">
+    <p><strong>{{ message.sender.username }}:</strong> {{ message.content }}</p>
+    <small>{{ message.created_at|timesince }} ago</small>
+</div>
+{% empty %}
+<p>No tienes mensajes nuevos.</p>
+{% endfor %}

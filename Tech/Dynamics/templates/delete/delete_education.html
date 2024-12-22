@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    h2 {
+        text-align: center;
+        color: #dc3545; /* Resalta en rojo el mensaje de confirmación */
+    }
+
+    p {
+        text-align: center;
+        font-size: 18px;
+        color: #495057;
+    }
+
+    /* Estilos generales para el formulario */
+    form {
+        max-width: 400px;
+        margin: 30px auto; /* Centra el formulario */
+        padding: 20px;
+        background-color: #ffffff; /* Fondo blanco para contraste */
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombras suaves */
+        text-align: center;
+    }
+
+    /* Estilo de los botones */
+    .botones {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px 5px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #dc3545; /* Rojo para eliminar */
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .botones:hover {
+        background-color: #c82333; /* Rojo más oscuro al pasar el mouse */
+        transform: scale(1.05); /* Ligeramente más grande */
+    }
+
+    /* Estilo para el enlace de cancelar para que se vea como un botón */
+    .cancelar {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px 5px;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #6c757d; /* Gris oscuro */
+        background-color: #e9ecef; /* Fondo gris claro */
+        border: 1px solid #ced4da; /* Borde gris claro */
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .cancelar:hover {
+        background-color: #dee2e6; /* Gris más oscuro */
+        color: #495057; /* Texto más oscuro */
+    }
+
+</style>
+
+<h2>¿Seguro que quieres eliminar esta educación?</h2>
+
+<p><strong>{{ education.degree }}</strong> en <em>{{ education.school }}</em></p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button class="botones" type="submit">Eliminar</button>
+    <a class="cancelar" href="{% url 'profile' %}">Atras</a>
+</form>
+
+{% endblock %}

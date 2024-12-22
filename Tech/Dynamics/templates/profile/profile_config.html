@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="mai">
+  <div class="container mx-auto py-10">
+    <h1 class="text-3xl font-bold mb-6">Mi Perfil</h1>
+    <form id="profile-form" method="POST" class="space-y-8" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Información Personal</h2>
+          <p class="card-description">Actualiza tu información personal y de contacto.</p>
+        </div>
+        <div class="card-content">
+          <!-- Campo Nombre -->
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" class="form-input" value="{{ user.first_name }}" required>
+            {% if form.nombre.errors %}
+              <span class="error-message">{{ form.nombre.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Apellido -->
+          <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input type="text" name="apellido" id="apellido" class="form-input" value="{{ user.last_name }}" required>
+            {% if form.apellido.errors %}
+              <span class="error-message">{{ form.apellido.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Email -->
+          <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" name="email" id="email" class="form-input" value="{{ user.email }}" required>
+            {% if form.email.errors %}
+              <span class="error-message">{{ form.email.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Teléfono -->
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="text" name="telefono" id="telefono" class="form-input" value="{{ user.telefono }}">
+            {% if form.telefono.errors %}
+              <span class="error-message">{{ form.telefono.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Dirección -->
+          <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input type="text" name="direccion" id="direccion" class="form-input" value="{{ user.direccion }}">
+            {% if form.direccion.errors %}
+              <span class="error-message">{{ form.direccion.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Ciudad -->
+          <div class="form-group">
+            <label for="ciudad">Ciudad</label>
+            <input type="text" name="ciudad" id="ciudad" class="form-input" value="{{ user.ciudad }}">
+            {% if form.ciudad.errors %}
+              <span class="error-message">{{ form.ciudad.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Provincia -->
+          <div class="form-group">
+            <label for="provincia">Provincia</label>
+            <input type="text" name="provincia" id="provincia" class="form-input" value="{{ user.provincia }}">
+            {% if form.provincia.errors %}
+              <span class="error-message">{{ form.provincia.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo País -->
+          <div class="form-group">
+            <label for="pais">País</label>
+            <input type="text" name="pais" id="pais" class="form-input" value="{{ user.pais }}">
+            {% if form.pais.errors %}
+              <span class="error-message">{{ form.pais.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Rol -->
+          <div class="form-group">
+            <label for="rol">Rol</label>
+            <select name="rol" id="rol" class="form-input">
+              <option value="Usuario" {% if user.rol == 'Usuario' %}selected{% endif %}>Usuario</option>
+              <option value="Administrador" {% if user.rol == 'Administrador' %}selected{% endif %}>Administrador</option>
+              <option value="Servidor" {% if user.rol == 'Servidor' %}selected{% endif %}>Proveedor de Servicios</option>
+            </select>
+            {% if form.rol.errors %}
+              <span class="error-message">{{ form.rol.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Foto de Perfil -->
+          <div class="form-group">
+            <label for="foto_perfil">Foto de Perfil</label>
+            <input type="file" name="foto_perfil" id="foto_perfil" class="form-input">
+            {% if form.foto_perfil.errors %}
+              <span class="error-message">{{ form.foto_perfil.errors.0 }}</span>
+            {% endif %}
+            
+            {% if user.foto_perfil %}
+            <img src="{{ user.foto_perfil.url }}" alt="Foto de Perfil" class="mt-2" width="100">
+                {% endif %}
+
+          </div>
+
+          <!-- Campo Fecha de Nacimiento -->
+          <div class="form-group">
+            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-input" value="{{ user.fecha_nacimiento }}">
+            {% if form.fecha_nacimiento.errors %}
+              <span class="error-message">{{ form.fecha_nacimiento.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Campo Género -->
+          <div class="form-group">
+            <label for="genero">Género</label>
+            <select name="genero" id="genero" class="form-input">
+              <option value="Masculino" {% if user.genero == 'Masculino' %}selected{% endif %}>Masculino</option>
+              <option value="Femenino" {% if user.genero == 'Femenino' %}selected{% endif %}>Femenino</option>
+              <option value="Otro" {% if user.genero == 'Otro' %}selected{% endif %}>Otro</option>
+            </select>
+            {% if form.genero.errors %}
+              <span class="error-message">{{ form.genero.errors.0 }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Cambio de Contraseña -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Cambio de Contraseña</h2>
+          <p class="card-description">Actualiza tu contraseña si lo deseas.</p>
+        </div>
+        <div class="card-content">
+          <!-- Contraseña Actual -->
+          <div class="form-group">
+            <label for="password_actual">Contraseña Actual</label>
+            <input type="password" name="password_actual" id="password_actual" class="form-input" placeholder="Introduce tu contraseña actual" required>
+            {% if form.password_actual.errors %}
+              <span class="error-message">{{ form.password_actual.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Nueva Contraseña -->
+          <div class="form-group">
+            <label for="password1">Nueva Contraseña</label>
+            <input type="password" name="password1" id="password1" class="form-input" placeholder="Introduce una nueva contraseña">
+            {% if form.password1.errors %}
+              <span class="error-message">{{ form.password1.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <!-- Confirmar Nueva Contraseña -->
+          <div class="form-group">
+            <label for="password2">Confirmar Nueva Contraseña</label>
+            <input type="password" name="password2" id="password2" class="form-input" placeholder="Confirma tu nueva contraseña">
+            {% if form.password2.errors %}
+              <span class="error-message">{{ form.password2.errors.0 }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary w-full">Guardar cambios</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile_config.js' %}"></script>
+{% endblock %}

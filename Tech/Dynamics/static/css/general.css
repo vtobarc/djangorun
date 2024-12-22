@@ -1,0 +1,381 @@
+/* Estilos exclusivos para la página de login */
+.login-container {
+   min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9fafb;
+    padding: 0.5rem;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 900px;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    overflow: hidden;
+    margin-top: 3.5rem;
+}
+
+.login-image-section {
+    width: 50%;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+}
+
+.login-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.login-form-section {
+    width: 50%;
+    padding: 2.5rem;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-title {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.login-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.login-forgot-password {
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.login-link {
+    color: #3b82f6;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+    margin-bottom: 0.75rem;
+}
+
+.login-btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.login-btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.login-btn-outline {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.login-btn-outline:hover {
+    background-color: #f9fafb;
+}
+
+.login-divider {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.login-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e5e7eb;
+}
+
+.login-divider-text {
+    position: relative;
+    background-color: white;
+    padding: 0 1rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.login-social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.login-social-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.login-social-btn:hover {
+    background-color: #f9fafb;
+}
+
+.login-social-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.login-register-link {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .login-box {
+        flex-direction: column;
+    }
+
+    .login-image-section,
+    .login-form-section {
+        width: 100%;
+    }
+
+    .login-image-section {
+        padding: 1rem;
+    }
+}
+
+
+
+
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9fafb;
+    padding: 1rem;
+}
+
+.register-box {
+    width: 100%;
+    max-width: 900px;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    overflow: hidden;
+}
+
+.register-image-section {
+    width: 50%;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+}
+
+.register-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.register-form-section {
+    width: 50%;
+    padding: 2.5rem;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.register-title {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.register-subtitle {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.register-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.register-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.register-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+    margin-bottom: 0.75rem;
+}
+
+.register-btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.register-btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.register-divider {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.register-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e5e7eb;
+}
+
+.register-divider-text {
+    position: relative;
+    background-color: white;
+    padding: 0 1rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.register-social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.register-social-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.register-social-btn:hover {
+    background-color: #f9fafb;
+}
+
+.register-social-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.register-login-link {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.register-link {
+    color: #3b82f6;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .register-box {
+        flex-direction: column;
+    }
+
+    .register-image-section,
+    .register-form-section {
+        width: 100%;
+    }
+
+    .register-image-section {
+        padding: 1rem;
+    }
+}
+
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.register-input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+
+
+

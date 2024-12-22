@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalle de Solicitud{% endblock %}
+
+
+{% block content %}
+<main class="mai">
+
+<div class="container">
+    <h1 class="title">Detalle de Solicitud</h1>
+    <div class="card" data-solicitud-id="{{ solicitud.id }}">
+        <div class="card-header">
+            <h2 id="titulo-solicitud" class="card-title">{{ solicitud.titulo }}</h2>
+        </div>
+        <div class="card-content">
+            <p id="descripcion-solicitud">{{ solicitud.descripcion }}</p>
+            <div class="info">
+                
+                <div><strong>Usuario:</strong> <span id="usuario-solicitud">{{ solicitud.usuario.first_name }} {{ solicitud.usuario.last_name }}</span></div>
+                <div><strong>Fecha de Solicitud:</strong> <span id="fecha-solicitud">{{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}</span></div>
+                <div><strong>Precio Acordado:</strong> <span id="precio-acordado">{{ solicitud.precio_acordado|default:"No establecido" }}</span></div>
+
+                <div><strong>Estado:</strong> <span id="estado-solicitud">{{ solicitud.get_estado_display }}</span></div>
+                <div><strong>Progreso:</strong> <span id="progreso-solicitud">{{ solicitud.get_progreso_display }}</span></div>
+
+                <div><strong>Fecha Límite:</strong> <span id="fecha-limite">{{ solicitud.fecha_limite|default:"No establecida" }}</span></div>
+                <div><strong>Foto de Solicitud:</strong> 
+
+                
+                    {% if solicitud.foto %}
+                        <img id="foto-solicitud" src="{{ solicitud.foto.url }}" alt="Foto de solicitud" class="solicitud-img">
+                    {% else %}
+                        <span>No hay foto disponible</span>
+                    {% endif %}
+                </div>
+                <div><strong>Dirección:</strong> <span id="pais-usuario">{{ solicitud.usuario.pais }}</span>, <span id="provincia-usuario">{{ solicitud.usuario.provincia }}</span>, <span id="ciudad-usuario">{{ solicitud.usuario.ciudad }}</span>, <span id="direccion-usuario">{{ solicitud.usuario.direccion }}</span></div>
+                
+               <!-- <div><strong>Método de Contacto:</strong> <span id="metodo-contacto">{{ solicitud.metodo_contacto|default:"No establecido" }}</span></div>-->
+                
+            </div>
+        </div>
+        <div class="card-footer">
+            <button id="btn-aceptar" class="btn btn-primary">Aceptar</button>
+            <button id="btn-en-proceso" class="btn btn-info">En Proceso</button>
+            <button id="btn-terminar" class="btn btn-success">Terminar</button>
+            <button id="btn-rechazar" class="btn btn-danger">Rechazar</button>
+            <button id="btn-cancelar" class="btn btn-cancel" onclick="location.href='{% url 'prestadores_dashboard' %}'"><=Atras</button>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Rechazo -->
+<div id="rechazo-modal" class="modal">
+    <div class="modal-content">
+        <h3>¿Estás seguro de que quieres rechazar esta solicitud?</h3>
+        <p>Por favor, ingresa el motivo del rechazo:</p>
+        <textarea id="motivo-rechazo" placeholder="Motivo de rechazo..."></textarea>
+        <div class="modal-footer">
+            <button id="cancelar-rechazo" class="btn">Cancelar</button>
+            <button id="confirmar-rechazo" class="btn btn-danger">Confirmar Rechazo</button>
+        </div>
+    </div>
+</div>
+</main >
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/detalle_solicitud.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<main class="mai">
+    <div id="notification" class="notification"></div>
+    <div id="toast" class="toast"></div>
+
+
+    <div class="container">
+        <h1>Solicitudes de Servicio</h1>
+        
+        <div class="tabs">
+            <button class="tab-button active" data-tab="requests">Mis Solicitudes</button>
+        </div>
+    
+        <div id="requestsTab" class="tab-content active">
+            <div class="actions">
+                
+                <button id="toggleFormButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#solicitudModal">
+                    <i class="fas fa-plus"></i> Nueva Solicitud
+                </button>
+                <div class="view-toggle">
+                    <button id="listViewBtn" class="btn btn-secondary active">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button id="gridViewBtn" class="btn btn-secondary">
+                        <i class="fas fa-th"></i>
+                    </button>
+                   
+                </div>
+                
+            </div>
+    
+            <div class="filters">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar solicitudes..." />
+    
+                <select id="orderSelect" class="form-control">
+                    <option value="fecha_asc">Fecha Ascendente</option>
+                    <option value="fecha_desc">Fecha Descendente</option>
+                </select>
+                <input type="date" id="dateFilter">
+            </div>
+    
+            <div id="requestsList" class="solicitudes-lista lista">
+                    {% for solicitud in solicitudes %}
+                        <div class="solicitud-item" data-id="{{ solicitud.id }}">
+                            <div class="titulo">
+                                <h3>{{ solicitud.titulo }}</h3>
+                            </div>
+                            <div class="descripcion">
+                                <p>{{ solicitud.descripcion }}</p>
+                            </div>
+                            <div class="estado">
+                                Estado: {{ solicitud.estado }}
+                            </div>
+                            <div class="progreso">
+                                Progreso: {{ solicitud.progreso }}
+                            </div>
+                            {% if solicitud.foto %}
+                                <div class="foto">
+                                    <img src="{{ solicitud.foto.url }}" alt="{{ solicitud.titulo }}">
+                                </div>
+                            {% endif %}
+                            <div class="fecha">
+                                Fecha: {{ solicitud.fecha_solicitud }}
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-warning edit-btn" data-id="{{ solicitud.id }}">
+                                    <i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger delete-btn" data-id="{{ solicitud.id }}">
+                                    <i class="fas fa-trash-alt"></i> 
+                                   </button>
+                            </div>
+
+                            
+                          
+
+                        </div>
+                    {% empty %}
+                        <p>No tienes solicitudes de servicio.</p>
+                    {% endfor %}
+                
+            </div>
+        </div>
+         <!-- Paginación -->
+         <div class="pagination">
+            {% if solicitudes.has_previous %}
+                <a href="?page={{ solicitudes.previous_page_number }}" class="page-link">« Anterior</a>
+            {% else %}
+                <a class="page-link" aria-disabled="true">« Anterior</a>
+            {% endif %}
+        
+            <span>Página {{ solicitudes.number }} de {{ solicitudes.paginator.num_pages }}</span>
+        
+            {% if solicitudes.has_next %}
+                <a href="?page={{ solicitudes.next_page_number }}" class="page-link">Siguiente »</a>
+            {% else %}
+                <a class="page-link" aria-disabled="true">Siguiente »</a>
+            {% endif %}
+        </div>
+        
+    
+        <div id="historyTab" class="tab-content">
+            
+            <div id="historialContainer" class="historial-container" style="display: none;">
+                <h2>Historial de Trabajo</h2>
+                <table class="table is-fullwidth is-striped is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Usuario</th>
+                            <th>Fecha de Solicitud</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for solicitud in solicitudes %}
+                        <tr>
+                            <td>{{ solicitud.titulo }}</td>
+                            <td>{{ solicitud.usuario.first_name }} {{ solicitud.usuario.last_name }}</td>
+                            <td>{{ solicitud.fecha_solicitud|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                <span class="tag {% if solicitud.estado == 'pendiente' %}is-warning{% elif solicitud.estado == 'en_proceso' %}is-info{% elif solicitud.estado == 'finalizado' %}is-success{% else %}is-danger{% endif %}">
+                                    {{ solicitud.get_estado_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{% url 'solicitud_detalle' solicitud.id %}" class="button is-small is-primary">Ver Detalles</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+
+        
+ 
+
+</main>
+<!-- Modal -->
+<div class="modal fade" id="solicitudModal" tabindex="-1" aria-labelledby="solicitudModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="solicitudModalLabel">Crear Nueva Solicitud</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+           <!-- Botón para cancelar y cerrar el modal -->
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">X</button>
+      </div>
+        <div class="modal-body">
+          <!-- Formulario dentro del modal -->
+          <form method="post" enctype="multipart/form-data" id="solicitudForm">
+              {% csrf_token %}
+              <div class="form-group">
+                  <label for="titulo">Título:</label>
+                  {{ form.titulo }}
+              </div>
+              <div class="form-group">
+                  <label for="descripcion">Descripción:</label>
+                  {{ form.descripcion }}
+              </div>
+              <div class="form-group">
+                  <label for="id_foto">Foto:</label>
+                  <input type="file" id="id_foto" name="foto" accept="image/*">
+              </div>
+              
+              <div class="form-group">
+                  <label for="fecha_limite">Fecha Límite:</label>
+                  <input type="datetime-local" id="fecha_limite" name="fecha_limite">
+              </div>
+             
+              <div class="form-group">
+                  <label for="metodo_contacto">Método de Contacto:</label>
+                  <input type="text" id="metodo_contacto" name="metodo_contacto">
+                 
+              </div>
+  
+              <div id="imagenPreview"></div>
+              <button type="submit" class="btn btn-success">Enviar Solicitud</button>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+<!-- Modal de Edición -->
+<div class="modal" id="editModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Solicitud</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="editTitulo">Título:</label>
+                        <input type="text" id="editTitulo" name="titulo" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescripcion">Descripción:</label>
+                        <textarea id="editDescripcion" name="descripcion" class="form-control" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveEditBtn">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación para Eliminar -->
+<div class="modal" id="confirmModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar esta solicitud?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Enviar Mensaje -->
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Enviar Mensaje</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="messageForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="messageContent" class="form-label">Mensaje:</label>
+                        <textarea id="messageContent" name="content" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/solicitudes.js' %}"></script>
+
+{% endblock %}
+
